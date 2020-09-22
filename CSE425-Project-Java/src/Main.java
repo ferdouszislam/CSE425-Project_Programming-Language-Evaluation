@@ -167,7 +167,7 @@ public class Main {
     //Method for merging multiple .csv files into one file
     public static void mergeCSV() throws IOException {
 
-        //Reading all files of the directory
+        //Reading all the files of the directory
         File directoryPath = new File("./data/provided");
         File filesList[] = directoryPath.listFiles();
         for(File file : filesList)
@@ -200,5 +200,4 @@ public class Main {
         }
         csvReader.close();
     }
-
 }
