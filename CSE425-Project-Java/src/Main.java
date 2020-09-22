@@ -166,24 +166,19 @@ public class Main {
 
     //Method for merging multiple .csv files into one file
     public static void mergeCSV() throws IOException {
-        readCsv("./data/COVID-19 BD Dataset-4 april.csv",data);
-        readCsv("./data/COVID-19 BD Dataset-5 april.csv",data);
-        readCsv("./data/COVID-19 BD Dataset-6 april.csv",data);
-        readCsv("./data/COVID-19 BD Dataset-7 april.csv",data);
-        readCsv("./data/COVID-19 BD Dataset-8 april.csv",data);
-        readCsv("./data/COVID-19 BD Dataset-9 april.csv",data);
-        readCsv("./data/COVID-19 BD Dataset-10 april.csv",data);
-        readCsv("./data/COVID-19 BD Dataset-11 april.csv",data);
-        readCsv("./data/COVID-19 BD Dataset-12 april.csv",data);
-        readCsv("./data/COVID-19 BD Dataset-15 april.csv",data);
-        readCsv("./data/COVID-19 BD Dataset-18 april.csv",data);
-        readCsv("./data/COVID-19 BD Dataset-25 april.csv",data);
-        readCsv("./data/COVID-19 BD Dataset-5 May.csv",data);
+
+        //Reading all files of the directory
+        File directoryPath = new File("./data/provided");
+        File filesList[] = directoryPath.listFiles();
+        for(File file : filesList)
+        {
+            readCsv(file.getAbsolutePath(),data);
+        }
 
         //storing a copy of merged/combined data file
         if(data.size()!=0)
         {
-            FileWriter csvWriter = new FileWriter("./data/mergedDataSet.csv");
+            FileWriter csvWriter = new FileWriter("./data/merged/mergedDataSet.csv");
             for(int i=0;i<data.size();i++)
             {
                 csvWriter.append(data.get(i));
