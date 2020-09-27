@@ -12,6 +12,7 @@ function startTimer()
 
 function getRumtime()
 {
+    echo
     if [ $start == 0 ] 
     then
         runtime=-1
@@ -79,26 +80,124 @@ function searchByDate()
 function searchByRange()
 {
 
+    echo
+
+    startTimer
+    
     local range=$1
     local searchColumn=$2
 
-    startTimer
+    declare -a resultArray
 
     if [[ $range = @(>)+([0-9]) ]] 
     then
-        echo "greater than format"
+
+        ## exclude the first character from $range
+        range="${range:1}"
+
+        ## search file
+        lc=0
+        while read -r line 
+        do
+            # skip the first line that contains column names
+            if [[ $lc == 0 ]] 
+            then
+                lc=1
+                continue
+            fi
+
+            # split line by comma and put into columns array
+            IFS=',' read -a columns <<<"$line"
+
+            if [[ ${columns[$searchColumn]} > $range ]] 
+            then
+                resultArray+=("${columns[0]}")
+            fi
+
+        done < $mergedDatasetFile
 
     elif [[ $range = @(<)+([0-9]) ]]
     then
-        echo "less than format"
+        
+        ## exclude the first character from $range
+        range="${range:1}"
+
+        ## search file
+        lc=0
+        while read -r line 
+        do
+            # skip the first line that contains column names
+            if [[ $lc == 0 ]] 
+            then
+                lc=1
+                continue
+            fi
+
+            # split line by comma and put into columns array
+            IFS=',' read -a columns <<<"$line"
+
+            if [[ ${columns[$searchColumn]} < $range ]] 
+            then
+                resultArray+=("${columns[0]}")
+            fi
+
+        done < $mergedDatasetFile
 
     elif [[ $range = +([0-9])@(-)+([0-9]) ]] 
     then
-        echo "range specified"
+        # split the range
+        IFS='-' read -a rs <<<"$range"
+
+        ## search file
+        lc=0
+        while read -r line 
+        do
+            # skip the first line that contains column names
+            if [[ $lc == 0 ]] 
+            then
+                lc=1
+                continue
+            fi
+
+            # split line by comma and put into columns array
+            IFS=',' read -a columns <<<"$line"
+
+            if (( ${columns[$searchColumn]} >= ${rs[0]} & ${columns[$searchColumn]} <= ${rs[1]} )) 
+            then
+                resultArray+=("${columns[0]}")
+            fi
+
+        done < $mergedDatasetFile        
 
     else
         echo "invalid format."       
     fi
+
+    searchResultFile="result.csv"
+    >$searchResultFile
+
+    ## print the unique elements of $resultArray
+    resultArray=($(echo "${resultArray[@]}" | tr ' ' '\n' | sort -u | tr '\n' ' '))
+    #echo ${resultArray[*]}
+    local cnt=0
+    for elem in "${resultArray[@]}"
+    do
+        ((cnt++))
+        echo -n "$elem," >>$searchResultFile
+        echo -n "$elem,"
+    done
+
+    ## check if any elemnent found or not
+    if [[ $cnt == 0 ]] 
+    then
+        echo
+        echo "no entry found."
+    else
+        echo
+        echo
+        echo "Total $cnt days matched the range (results saved into /result.csv file)"
+    fi
+
 
     getRumtime
     

@@ -8,6 +8,23 @@ end=`date +%s%N`
 runtime=$(((end-start)/1000000))
 
 
+## substring
+x=">10"
+x="${x:1}"
+echo "$x"
+((x++))
+echo "$x"
+if [[ $x > 10 ]] 
+then
+    echo "yesss"
+fi
+
+## array index
+arr=(1 3 4)
+i=0
+echo ${arr[$i]}
+
+
 ## input format checking
 echo -n ">"
 read input
