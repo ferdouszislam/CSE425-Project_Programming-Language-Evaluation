@@ -73,7 +73,7 @@ public class Main {
         if(option==0)
         {
             System.out.println("\n\nSearch data set by 'Date'");
-            System.out.print("Enter date (dd/mm/yyyy): ");
+            System.out.print("Enter date (mm/dd/yyyy): ");
         }
         else if(option==1)
         {
