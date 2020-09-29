@@ -19,41 +19,62 @@ public class Main {
             switch (option)
             {
                 case '0':
-                    searchDataSet(0);
+                    System.out.println("\n\nSearch data set by 'Date'");
+                    System.out.print("Enter date (mm/dd/yyyy): ");
+                    performSearch(0);
                     break;
 
                 case '1':
-                    searchDataSet(1);
+                    System.out.println("\n\nSearch data set by 'Daily new confirmed cases'");
+                    System.out.print("Enter case number: ");
+                    performSearch(1);
                     break;
 
                 case '2':
-                    searchDataSet(2);
+                    System.out.println("\n\nSearch data set by 'Total confirmed cases'");
+                    System.out.print("Enter total case number: ");
+                    performSearch(2);
                     break;
 
                 case '3':
-                    searchDataSet(3);
+                    System.out.println("\n\nSearch data set by 'Daily new deaths'");
+                    System.out.print("Enter number of deaths: ");
+                    performSearch(3);
                     break;
                 case '4':
-                    searchDataSet(4);
+                    System.out.println("\n\nSearch data set by 'Total deaths'");
+                    System.out.print("Enter total number of deaths: ");
+                    performSearch(4);
                     break;
                 case '5':
-                    searchDataSet(5);
+                    System.out.println("\n\nSearch data set by 'Total deaths'");
+                    System.out.print("Enter total number of deaths: ");
+                    performSearch(5);
                     break;
                 case '6':
-                    searchDataSet(6);
+                    System.out.println("\n\nSearch data set by 'Total recovered'");
+                    System.out.print("Enter total number of recovered: ");
+                    performSearch(6);
                     break;
 
                 case '7':
-                    searchDataSet(7);
+                    System.out.println("\n\nSearch data set by 'Daily New Tests'");
+                    System.out.print("Enter number of daily new tests: ");
+                    performSearch(7);
                     break;
                 case '8':
-                    searchDataSet(8);
+                    System.out.println("\n\nSearch data set by 'Total Tests'");
+                    System.out.print("Enter total number of tests: ");
+                    performSearch(8);
                     break;
                 case '9':
-                    searchDataSet(9);
+                    System.out.println("\n\nSearch data set by 'Active Cases'");
+                    System.out.print("Enter number of active cases: ");
+                    performSearch(9);
                     break;
 
                 case '#':
+
                     System.exit(0);
                     break;
                 default:
@@ -64,64 +85,81 @@ public class Main {
     }
 
 
-
-    public static void searchDataSet(int option)
+    public static void searchDataSetComp(int option,int value,String sign)
     {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
+        Boolean isFound = false;
 
-        if(option==0)
-        {
-            System.out.println("\n\nSearch data set by 'Date'");
-            System.out.print("Enter date (mm/dd/yyyy): ");
-        }
-        else if(option==1)
-        {
-            System.out.println("\n\nSearch data set by 'Daily new confirmed cases'");
-            System.out.print("Enter case number: ");
-        }
-        else if(option==2)
-        {
-            System.out.println("\n\nSearch data set by 'Total confirmed cases'");
-            System.out.print("Enter total case number: ");
-        }
-        else if (option==3)
-        {
-            System.out.println("\n\nSearch data set by 'Daily new deaths'");
-            System.out.print("Enter number of deaths: ");
-        }
-        else if (option==4)
-        {
-            System.out.println("\n\nSearch data set by 'Total deaths'");
-            System.out.print("Enter total number of deaths: ");
-        }
-        else if (option==5)
-        {
-            System.out.println("\n\nSearch data set by 'Total deaths'");
-            System.out.print("Enter total number of deaths: ");
-        }
-        else if (option==6)
-        {
-            System.out.println("\n\nSearch data set by 'Total recovered'");
-            System.out.print("Enter total number of recovered: ");
-        }
-        else if (option==7)
-        {
-            System.out.println("\n\nSearch data set by 'Daily New Tests'");
-            System.out.print("Enter number of daily new tests: ");
-        }
-        else if (option==8)
-        {
-            System.out.println("\n\nSearch data set by 'Total Tests'");
-            System.out.print("Enter total number of tests: ");
-        }
-        else {
-            System.out.println("\n\nSearch data set by 'Active Cases'");
-            System.out.print("Enter number of active cases: ");
-        }
+        try {
+            for(int i=1;i<data.size();i++)
+            {
+                String[] entry = data.get(i).split(",");
+                if(sign.equals(">"))
+                {
+                    if(Integer.parseInt(entry[option])>value)
+                    {
+                        isFound = true;
+
+                        for (String s: entry)
+                        {
+                            System.out.print(s+"    ");
+                        }
+                        System.out.println("");
+
+                    }
+                }
+                else
+                {
+                    if(Integer.parseInt(entry[option])<value)
+                    {
+                        isFound = true;
+
+                        for (String s: entry)
+                        {
+                            System.out.print(s+"    ");
+                        }
+                        System.out.println("");
+
+                    }
+                }
+
+            }
+            if(!isFound) { System.out.println("***Data not found!***"); }
+
+        }catch (Exception e){}
+    }
 
 
-        String key = scanner.next();
+    public static void searchDataSetRangeInput(int option, int start, int end)
+    {
+        Boolean isFound = false;
+
+        try {
+            for(int i=1;i<data.size();i++)
+            {
+                String[] entry = data.get(i).split(",");
+                if(Integer.parseInt(entry[option])>=start && Integer.parseInt(entry[option])<=end)
+                {
+                    isFound = true;
+
+                    for (String s: entry)
+                    {
+                        System.out.print(s+"    ");
+                    }
+                    System.out.println("");
+
+                }
+            }
+            if(!isFound) { System.out.println("***Data not found!***"); }
+
+        }catch (Exception e){}
+    }
+
+
+
+    public static void searchDataSetSingleInput(int option, String key)
+    {
+
+
         Boolean isFound = false;
 
         try {
@@ -146,6 +184,40 @@ public class Main {
 
     }
 
+    public static void performSearch(int option)
+    {
+        long startTime = System.currentTimeMillis();
+        String key = scanner.next();
+        if(option==0)
+        {
+            searchDataSetSingleInput(option,key);
+        }
+        else
+        {
+            if(key.contains(","))
+            {
+                String[] temp = key.split(",");
+                searchDataSetRangeInput(option,Integer.parseInt(temp[0]),Integer.parseInt(temp[1]));
+            }
+            else if(key.contains(">"))
+            {
+                String value = key.replace(">","");
+                searchDataSetComp(option,Integer.parseInt(value),">");
+            }
+            else if(key.contains("<"))
+            {
+                String value = key.replace("<","");
+                searchDataSetComp(option,Integer.parseInt(value),"<");
+            }
+            else
+            {
+                searchDataSetSingleInput(option,key);
+            }
+        }
+        System.out.println("Execution time for searching: "+ (System.currentTimeMillis()-startTime)+"ms");
+
+    }
+
 
     public static void showMenu()
     {
@@ -166,7 +238,7 @@ public class Main {
 
     //Method for merging multiple .csv files into one file
     public static void mergeCSV() throws IOException {
-
+        long startTime = System.currentTimeMillis();
         //Reading all the files of the directory
         File directoryPath = new File("./data/provided");
         File filesList[] = directoryPath.listFiles();
@@ -186,6 +258,7 @@ public class Main {
             }
             csvWriter.close();
         }
+        System.out.println("Execution time for merging: "+ (System.currentTimeMillis()-startTime)+"ms");
     }
 
     //Method for reading single csv file
