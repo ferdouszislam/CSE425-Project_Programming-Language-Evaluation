@@ -77,6 +77,9 @@ public class Main {
 
                     System.exit(0);
                     break;
+                case '*':
+                    Help();
+                    break;
                 default:
                     System.out.println("\n\n***Invalid option!***");
                     break;
@@ -232,6 +235,7 @@ public class Main {
         System.out.println("7. Search by 'Daily New Tests'");
         System.out.println("8. Search by 'Total Tests'");
         System.out.println("9. Search by 'Active Cases'");
+        System.out.println("*. Show help");
         System.out.println("#. Close");
         System.out.print("Select an option(by serial no.): ");
     }
@@ -258,7 +262,7 @@ public class Main {
             }
             csvWriter.close();
         }
-        System.out.println("Execution time for merging: "+ (System.currentTimeMillis()-startTime)+"ms");
+        System.out.println("Execution time for merging the data set: "+ (System.currentTimeMillis()-startTime)+"ms");
     }
 
     //Method for reading single csv file
@@ -272,5 +276,14 @@ public class Main {
             }
         }
         csvReader.close();
+    }
+
+    public static void Help()
+    {
+        System.out.println("\n\nSelect options using the row number on the left of the main menu");
+        System.out.println("For special searches use the example below:");
+        System.out.println("1. Single input search input format: 10");
+        System.out.println("2. Range search input format: 20,50");
+        System.out.println("3. Comparison search input format: >20");
     }
 }
